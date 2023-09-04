@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:weightSum="12"
+    android:background="#224968"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login_View">
+
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingHorizontal="100dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/app_icon"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_weight="2"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp">
+
+        <Spinner
+            android:id="@+id/address_spinner"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/login_rec"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+
+        <Button
+            android:paddingHorizontal="30dp"
+            android:id="@+id/address_join"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/login_rec"
+            android:text="원플레이스 시작하기"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+
+        <CheckBox
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:checked="false"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/login_check"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+<LinearLayout
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="3">
+
+    <LinearLayout
+        android:id="@+id/company_info"
+        android:gravity="right"
+        android:background="#BEBEBE"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_gravity="center"
+            android:textColor="#696969"
+            android:text="사업자 정보"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/arrow_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_down"/>
+
+        <ImageView
+            android:id="@+id/arrow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_up"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/company"
+        android:gravity="right"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:textColor="#696969"
+            android:paddingVertical="3dp"
+            android:paddingLeft="10dp"
+            android:text="주식회사 원플레이스\n대표 : 김땡땡\n사업자 등록 번호 : 123-12-12345
+                            \n통신판매업 신고번호 : 2023-xxxx-xxxx
+                            \n주소 : 경기도 성남시 성남동 xxx xxxx
+                            \n대표 전화 : 0000-0000"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:src="#BEBEBE"/>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:background="@color/white"
+            android:gravity="center"
+            android:textColor="#696969"
+            android:text="개인정보 처리방침"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:background="@color/white"
+            android:gravity="center"
+            android:textColor="#696969"
+            android:text="이용약관"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+</LinearLayout>

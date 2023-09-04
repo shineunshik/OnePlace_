@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 앱의 대략적인 위치 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 앱의 정확한 위치 -->
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" /> <!-- 기기 전화번호 추출 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 기기의 통화상태 읽기 -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" /> <!-- 외부 저장소 쓰기 -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" /> <!-- 외부 저장소 읽기 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- 이미지 파일 읽기 -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.OnePlace_"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="33">
+        <activity
+            android:name=".Place_Hospital_Info"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Hospital"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Train_Choice"
+            android:exported="false"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".Place_Train_Info"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Bus_Station_Info"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Bus_Intercity"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Chat_Room"
+            android:exported="false" />
+        <activity
+            android:name=".Place_FreeBoard_Write"
+            android:exported="false" />
+        <activity
+            android:name=".Place_FreeBoard_Look"
+            android:exported="false" />
+        <activity
+            android:name=".Place_FreeBoard"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Move"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Chat_Main"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Shop"
+            android:exported="false" />
+        <activity
+            android:name=".Place_Main"
+            android:exported="false" />
+        <activity
+            android:name=".Login_View"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PassWordPayment"
+            android:exported="false" />
+        <activity
+            android:name=".DefaultPayment"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

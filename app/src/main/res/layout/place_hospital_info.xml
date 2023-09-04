@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Place_Hospital_Info">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:paddingVertical="10dp"
+            android:text="병원 이름"
+            android:gravity="center"
+            android:id="@+id/dutyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="주소 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="대표전화 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="응급실 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/dutyAddr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/dutyTel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/dutyTel3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/dutyEmclsName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/dgidIdName_view"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="진료과목"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dgidIdName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hperyn_view"
+                android:text="응급실 총 수용 가능 인원"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/hvec_view"
+                android:text="현재 남은 응급실 병상"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/dutyEryn_view"
+                android:text="응급실 운영 여부"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/dutyHayn_view"
+                android:text="입원실 가용 여부"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/hpbdn_view"
+                android:text="입원실 총 병상 수"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hperyn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/hvec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/dutyEryn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/dutyHayn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/hpbdn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/dutyHano"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"/>
+    <!--수실실 -->
+    <TextView
+        android:id="@+id/hvoc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+    <TextView
+        android:id="@+id/hpopyn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+
+
+<LinearLayout
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/duty_time_title"
+            android:gravity="center"
+            android:text="외래 진료 시간"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime1"
+            android:layout_width="wrap_content"
+            android:text="월요일 : "
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime1s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0830" />
+
+        <TextView
+            android:id="@+id/dutyTime1c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime2"
+            android:layout_width="wrap_content"
+            android:text="화요일 : "
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime2s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime2c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime3"
+            android:layout_width="wrap_content"
+            android:text="수요일 : "
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime3s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime3c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime4"
+            android:layout_width="wrap_content"
+            android:text="목요일 : "
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime4s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime4c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime5"
+            android:layout_width="wrap_content"
+            android:text="금요일 : "
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime5s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime5c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime6"
+            android:layout_width="wrap_content"
+            android:text="토요일 : "
+            android:textColor="#FF0000"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime6s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime6c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/dutyTime7"
+            android:layout_width="wrap_content"
+            android:text="일요일 : "
+            android:textColor="#FF0000"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime7s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime7c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/dutyTime8"
+            android:layout_width="wrap_content"
+            android:text="공휴일 : "
+            android:textColor="#FF0000"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="right"
+            android:id="@+id/dutyTime8s"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dutyTime8c"
+            android:layout_width="wrap_content"
+            android:text="0830"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/MKioskTy_title"
+            android:gravity="center"
+            android:text="항목별 응급수술 가능 여부"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="응급실"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" />
+
+                <TextView
+                    android:id="@+id/skTy1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="뇌출혈수술" />
+
+                <TextView
+                    android:id="@+id/skTy2"
+                    android:text="뇌경색의재관류"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy3"
+                    android:text="심근경색의재관류"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy4"
+                    android:text="복부손상의수술"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy5"
+                    android:text="사지접합의수술"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy6"
+                    android:text="응급내시경"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy7"
+                    android:text="응급투석"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy8"
+                    android:text="조산산모"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy9"
+                    android:text="정신질환자"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy10"
+                    android:text="신생아"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/skTy11"
+                    android:text="중증화상"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:gravity="center"
+                    android:text="응급실"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy25"
+                    android:layout_height="0dp" />
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy1"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy2"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy3"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy4"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy5"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy6"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy7"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy8"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy9"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy10"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:gravity="center"
+                    android:text="수술"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/MKioskTy11"
+                    android:layout_height="wrap_content"/>
+
+
+
+            </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:textColor="@color/white"
+            android:background="#224968"
+            android:text="위치 보기 "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "351515463143",
+    "firebase_url": "https://oneplace-db16a-default-rtdb.firebaseio.com",
+    "project_id": "oneplace-db16a",
+    "storage_bucket": "oneplace-db16a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351515463143:android:7d9dd2112ceca125bd4142",
+        "android_client_info": {
+          "package_name": "oneplace.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351515463143-8ealo9rblrhtj19ji969h7au8pvqsg7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDprOHhcnA_RSVb51lPHA-WwEw8fAOdiJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351515463143-8ealo9rblrhtj19ji969h7au8pvqsg7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_choice"
+
+    >
+
+
+    <TextView
+        android:textSize="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="40dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:text="지역을 선택해 주세요." />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:paddingVertical="15dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:id="@+id/choice1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="확인" />
+        <ImageView
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@color/black"/>
+        <TextView
+            android:paddingVertical="15dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:id="@+id/choice2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="확인" />
+
+    </LinearLayout>
+</LinearLayout>
