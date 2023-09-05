@@ -182,12 +182,7 @@ public class Place_Train_Info extends AppCompatActivity {
                         arrayList.add(dataSnapshot.getValue(Ob_Train_Info.class));
                     }
 
-                    Collections.sort(arrayList, new Comparator<Ob_Train_Info>() {
-                        @Override
-                        public int compare(Ob_Train_Info o1, Ob_Train_Info o2) {
-                            return o1.getAddress().compareTo(o2.getAddress());
-                        }
-                    });
+
 
                     // 각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단  (원주부터 진행)
                     new Thread(new Runnable() {
@@ -212,7 +207,12 @@ public class Place_Train_Info extends AppCompatActivity {
             }
         });
 
-
+        Collections.sort(arrayList, new Comparator<Ob_Train_Info>() {
+            @Override
+            public int compare(Ob_Train_Info o1, Ob_Train_Info o2) {
+                return o1.getAddress().compareTo(o2.getAddress());
+            }
+        });
 
 
 
@@ -261,8 +261,8 @@ public class Place_Train_Info extends AppCompatActivity {
     //각 열차가 도착하는 역 발췌 //75에 250부터 시작
     public void Train_station_Info(ArrayList<Ob_Train_Info> arrayList)throws IOException{
 
-        for (start = 75; start < arrayList.size(); start++) {
-            for (finall = 250; finall < arrayList.size(); finall++) {
+        for (start = 96; start < arrayList.size(); start++) {
+            for (finall = 260; finall < arrayList.size(); finall++) {
                 try {
 
                     System.out.println(arrayList.size()+"\n");
@@ -275,9 +275,9 @@ public class Place_Train_Info extends AppCompatActivity {
 
                     urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getStrtpntAlocFndTrainInfo"); /*URL*/
 
-                   // urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-                   // urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
-                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
+                  ///  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
+                    //urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
                     urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                     urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
                     urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
@@ -351,6 +351,7 @@ public class Place_Train_Info extends AppCompatActivity {
                                     if (nNode_item2.getNodeType() == Node.ELEMENT_NODE) {
                                          eElement_item2 = (Element) nNode_item2;
                                         System.out.println(getTagValue("returnAuthMsg", eElement_item2) + "     " + arrayList.get(finall).getNodename());
+                                       // ActivityCompat.finishAffinity(Place_Train_Info.this);
                                         onDestroy(); //트래픽초과로 데이터를 받지 못하면 로그를 남기고 앱 완전 종료
                                         return;
                                     }

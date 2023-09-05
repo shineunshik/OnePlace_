@@ -182,8 +182,8 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
                     num= getTagValue("totalCount", eElement_body);
 
                  //   urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*///은식
-                    urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*///누나
-                 //   urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                  //  urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*///누나
+                    urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
                     urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                     urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(num, "UTF-8")); /*한 페이지 결과 수*/
                     urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
@@ -252,7 +252,7 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
                                 if (nNode2.getNodeType() == Node.ELEMENT_NODE) { //노드 type이 같을 경우에 실행
                                     //log 확인 작업
                                     eElement2 = (Element) nNode2;
-                                    Ob_Bus_Station_Info_list ob_bus_station_info_list = new Ob_Bus_Station_Info_list();
+                                    Ob_Bus_Station_Info_list ob_bus_station_info_list = new Ob_Bus_Station_Info_list(); //각 항목들 null포인트 대처
                                     ob_bus_station_info_list.setDepPlandTime(getTagValue("depPlandTime", eElement2)); //출발시간
                                     ob_bus_station_info_list.setArrPlandTime(getTagValue("arrPlandTime", eElement2)); //도착시간
                                     ob_bus_station_info_list.setCharge(getTagValue("charge", eElement2)); //요금

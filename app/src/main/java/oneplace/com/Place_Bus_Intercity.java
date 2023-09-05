@@ -152,21 +152,7 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
         });
 
 
-        //검색
-        search_view=(SearchView)findViewById(R.id.search_view);
-        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String text) {
-                setSearch_view(text);
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String text) {
-                setSearch_view(text);
-                return true;
-            }
-        });
 
         recyclerview=(RecyclerView)findViewById(R.id.recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Place_Bus_Intercity.this);
@@ -189,24 +175,19 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
                     }
 
 
-                //    각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                bus_station_Info(arrayList);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }).start();
+//                //    각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                bus_station_Info(arrayList);
+//                            } catch (IOException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
+//                    }).start();
 
-                    Collections.sort(arrayList, new Comparator<Ob_Bus_Station_list>() {
-                        @Override
-                        public int compare(Ob_Bus_Station_list o1, Ob_Bus_Station_list o2) {
-                            return o1.getAddress().compareTo(o2.getAddress());
-                        }
-                    });
+
 
                     adapter.notifyDataSetChanged();
                 }
@@ -218,9 +199,28 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
 
             }
         });
+        Collections.sort(arrayList, new Comparator<Ob_Bus_Station_list>() {
+            @Override
+            public int compare(Ob_Bus_Station_list o1, Ob_Bus_Station_list o2) {
+                return o1.getAddress().compareTo(o2.getAddress());
+            }
+        });
 
+//검색
+        search_view=(SearchView)findViewById(R.id.search_view);
+        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                setSearch_view(text);
+                return false;
+            }
 
-
+            @Override
+            public boolean onQueryTextChange(String text) {
+                setSearch_view(text);
+                return true;
+            }
+        });
 
 
 
@@ -257,15 +257,15 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
         });
 
 
-    }
+     }
 
 
 
-    //각 열차가 도착하는 역 발췌 //9 에 180 부터
+    //각 열차가 도착하는 역 발췌 완료
     public void bus_station_Info(ArrayList<Ob_Bus_Station_list> arrayList)throws IOException{
 
-       for (start =99; start < arrayList.size(); start++) {
-           for (finall = 180; finall < arrayList.size(); finall++) {
+       for (start =212; start <= arrayList.size(); start++) {
+           for (finall = 0; finall < arrayList.size(); finall++) {
 
                try {
                        System.out.println(arrayList.size()+"\n");
@@ -275,9 +275,9 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
 
                        urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/ExpBusInfoService/getStrtpntAlocFndExpbusInfo"); /*URL*/
 
-                   //    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-                    //   urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
-                       urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
+                      // urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                       urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
+                     //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
                        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
                        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
@@ -556,13 +556,13 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
     }
 
     public void  setSearch_view(String charText){
-        ArrayList<Ob_Bus_Station_list> myList = new ArrayList<>();
+        ArrayList<Ob_Bus_Station_list> myList1 = new ArrayList<>();
         for (Ob_Bus_Station_list ob_bus_station_list : arrayList){
             if (ob_bus_station_list.getAddress().toLowerCase().contains(charText.toLowerCase())||ob_bus_station_list.getTerminalNm().toLowerCase().contains(charText.toLowerCase())){
-                myList.add(ob_bus_station_list);
+                myList1.add(ob_bus_station_list);
             }
         }
-        adapter = new CusTomAdapter_Bus_Station_list(myList,Place_Bus_Intercity.this);
+        adapter = new CusTomAdapter_Bus_Station_list(myList1,Place_Bus_Intercity.this);
         recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
