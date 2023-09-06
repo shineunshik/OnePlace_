@@ -48,6 +48,8 @@ import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import oneplace.com.API.Train_List_Add_API;
+
 public class Place_Train_Info extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseDatabase database2;
@@ -86,6 +88,7 @@ public class Place_Train_Info extends AppCompatActivity {
     Node nNode_item2;
 
     Element eElement_item2 ;
+    Train_List_Add_API train_list_add_api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,16 +101,18 @@ public class Place_Train_Info extends AppCompatActivity {
         Calendar_dialog.setContentView(R.layout.calendar_view);
         calendar=(CalendarView) Calendar_dialog.findViewById(R.id.calendar);//달력
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Train_station_list();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        }).start();
+        train_list_add_api = new Train_List_Add_API();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    train_list_add_api.Train_station_list();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
@@ -173,7 +178,7 @@ public class Place_Train_Info extends AppCompatActivity {
 
         database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
         databaseReference=database.getReference("-기차역").child("-기차역LIST");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
@@ -184,17 +189,17 @@ public class Place_Train_Info extends AppCompatActivity {
 
 
 
-                    // 각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단  (원주부터 진행)
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Train_station_Info(arrayList);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }).start();
+//                    // 각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단  (원주부터 진행)
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                Train_station_Info(arrayList);
+//                            } catch (IOException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
+//                    }).start();
 
                     adapter.notifyDataSetChanged();
                 }
@@ -386,142 +391,9 @@ public class Place_Train_Info extends AppCompatActivity {
 
                 }
             }
-
-
     }
 
 
-    //전국 기차역 리스트 발췌
-    public void Train_station_list()throws IOException{
-        try {
-            StringBuilder urlBuilder_total = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getCtyAcctoTrainSttnList"); /*URL*/
-            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getCtyAcctoTrainSttnList"); /*URL*/
-            URL url_total;
-            URL url;
-            HttpURLConnection httpURLConnection_total;
-            HttpURLConnection httpURLConnection;
-            BufferedReader rd_total;
-            BufferedReader rd;
-            String line_total;
-            String line;
-            StringBuilder sb_total;
-            StringBuilder sb;
-            Document document_total;
-            Document document;
-         //   urlBuilder_total.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-         //   urlBuilder_total.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
-            urlBuilder_total.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
-            urlBuilder_total.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-            urlBuilder_total.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
-            urlBuilder_total.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
-            urlBuilder_total.append("&" + URLEncoder.encode("cityCode","UTF-8") + "=" + URLEncoder.encode("38", "UTF-8")); /*시/도 ID*/
-
-
-            url_total = new URL(urlBuilder_total.toString());
-            httpURLConnection_total = (HttpURLConnection) url_total.openConnection();
-            httpURLConnection_total.setRequestMethod("GET");
-            httpURLConnection_total.setRequestProperty("Content-type", "application/json");
-            // System.out.println("Response code: " + conn.getResponseCode());
-
-            if (httpURLConnection_total.getResponseCode() >= 200 && httpURLConnection_total.getResponseCode() <= 300) {
-                rd_total = new BufferedReader(new InputStreamReader(httpURLConnection_total.getInputStream()));
-            } else {
-                rd_total = new BufferedReader(new InputStreamReader(httpURLConnection_total.getErrorStream()));
-            }
-
-            sb_total = new StringBuilder();
-            while ((line_total = rd_total.readLine()) != null) {
-                sb_total.append(line_total);
-            }
-            rd_total.close();
-            httpURLConnection_total.disconnect();
-            //API를 사용하기위한 API정보 가져오기(기본 샘플 코드)
-
-            //xml 데이터를 파싱하기 위한 코드
-            document_total = DocumentBuilderFactory
-                    .newInstance()
-                    .newDocumentBuilder()
-                    .parse(url_total + "");
-            document_total.getDocumentElement().normalize();
-
-            NodeList nList_body = document_total.getElementsByTagName("body"); //xml에서 파싱할 리스트명
-            Node nNode_body = nList_body.item(0);
-            Element eElement_body = (Element) nNode_body;
-            num= getTagValue("totalCount", eElement_body);
-            //이까지 총 갯수 추출
-
-          //  urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-          //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
-            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
-            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-            urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(num, "UTF-8")); /*한 페이지 결과 수*/
-            urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
-            urlBuilder.append("&" + URLEncoder.encode("cityCode","UTF-8") + "=" + URLEncoder.encode("38", "UTF-8")); /*시/도 ID*/
-
-            url = new URL(urlBuilder.toString());
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.setRequestProperty("Content-type", "application/json");
-            // System.out.println("Response code: " + conn.getResponseCode());
-
-            if (httpURLConnection.getResponseCode() >= 200 && httpURLConnection.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-            } else {
-                rd = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
-            }
-
-            sb = new StringBuilder();
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
-            }
-            rd.close();
-            httpURLConnection.disconnect();
-            //API를 사용하기위한 API정보 가져오기(기본 샘플 코드)
-            //xml 데이터를 파싱하기 위한 코드
-            document = DocumentBuilderFactory
-                    .newInstance()
-                    .newDocumentBuilder()
-                    .parse(url + "");
-            document.getDocumentElement().normalize();
-
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    NodeList nList_item = document.getElementsByTagName("item"); //xml에서 파싱할 리스트명
-                    //버스 정류장 정보 계속 업데이트
-                    for (int temp = 0; temp < nList_item.getLength(); temp++) {
-                        Node nNode_item = nList_item.item(temp);
-                        if (nNode_item.getNodeType() == Node.ELEMENT_NODE) {
-                            //log 확인 작업
-                            Element eElement_item = (Element) nNode_item;
-
-                            database= FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-                            databaseReference=database.getReference("-기차역").child("-기차역LIST");
-                            databaseReference.child(getTagValue("nodename", eElement_item)).child("nodeid").setValue(getTagValue("nodeid", eElement_item));
-                            databaseReference.child(getTagValue("nodename", eElement_item)).child("nodename").setValue(getTagValue("nodename", eElement_item));
-                            databaseReference.child(getTagValue("nodename", eElement_item)).child("address").setValue("경상남도");
-                        }
-                    }
-                }
-            });
-
-
-        }
-        catch (IOException e){
-            System.out.println("IOException : 실패");
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            System.out.println("ParserConfigurationException : 실패");
-            e.printStackTrace();
-        } catch (SAXException e) {
-            System.out.println("SAXException : 실패");
-            e.printStackTrace();
-        }catch (NullPointerException e){
-            System.out.println("NullPointerException : 실패");
-            e.printStackTrace();
-        }
-    }
 
     public void  setSearch_view(String charText){
         ArrayList<Ob_Train_Info> myList = new ArrayList<>();

@@ -43,8 +43,7 @@ public class CusTomAdapter_Bus_Station_list extends RecyclerView.Adapter<CusTomA
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         get_save_select_address();
 
-        holder.bus_station_number.setText("ID : "+arrayList.get(position).getTerminalId());
-        holder.bus_station_name.setText("정류소 명 : "+arrayList.get(position).getTerminalNm());
+
 
 
 
@@ -59,6 +58,8 @@ public class CusTomAdapter_Bus_Station_list extends RecyclerView.Adapter<CusTomA
         }else {
             holder.address.setText(position+".  "+arrayList.get(position).getAddress());
         }
+        holder.bus_station_number.setText("ID : "+arrayList.get(position).getTerminalId());
+        holder.bus_station_name.setText("정류소 명 : "+arrayList.get(position).getTerminalNm());
 
 //        try {
 //            database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");

@@ -36,7 +36,7 @@ public class CusTomAdapter_Hospital_List extends RecyclerView.Adapter<CusTomAdap
     @Override
     public void onBindViewHolder(@NonNull CusTomAdapter_Hospital_List.CustomViewHolder holder, int position) {
 
-        holder.dutyName.setText(arrayList.get(position).getDutyName());
+        holder.dutyName.setText(position+1+".  "+arrayList.get(position).getDutyName());
         holder.dutyTel1.setText("대표전화 : "+arrayList.get(position).getDutyTel1());
         holder.dutyTel3.setText("응급실 : "+arrayList.get(position).getDutyTel3());
         holder.dutyAddr.setText(arrayList.get(position).getDutyAddr());
