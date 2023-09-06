@@ -9,6 +9,7 @@ public class Ob_Bus_Station_Info_list {
         String depPlandTime; //출발시간
         String gradeNm; //버스등급
         String routeId; //노선ID
+        String check;
 
     public Ob_Bus_Station_Info_list(){
     }
@@ -77,5 +78,13 @@ public class Ob_Bus_Station_Info_list {
 
     public void setRouteId(String routeId) {
         this.routeId = routeId;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
     }
 }

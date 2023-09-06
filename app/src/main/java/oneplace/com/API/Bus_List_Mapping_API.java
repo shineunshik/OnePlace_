@@ -54,6 +54,7 @@ public class Bus_List_Mapping_API {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
     DatabaseReference databaseReference3;
+    DatabaseReference databaseReference4;
     ArrayList<Ob_Bus_Station_Info_list> arrayList_real;
     int add;
 
@@ -65,6 +66,11 @@ public class Bus_List_Mapping_API {
             for (finall = 0; finall < arrayList.size(); finall++) {
 
                 try {
+                    database = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+                    databaseReference4 = database.getReference("-고속버스").child("-정류장매칭 check");
+                    databaseReference4.child(arrayList.get(start).getTerminalNm()).child(arrayList.get(start).getTerminalNm()).child("check").setValue("ok");
+
+
                     System.out.println(arrayList.size()+"\n");
                     System.out.println(start+"      "+finall+"\n");
                     System.out.println(start + "번째 출발지 : " + arrayList.get(start).getTerminalNm());
@@ -72,9 +78,9 @@ public class Bus_List_Mapping_API {
 
                     urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/ExpBusInfoService/getStrtpntAlocFndExpbusInfo"); /*URL*/
 
-                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-                    // urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
-                    //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
+                  //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                   //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
+                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
                     urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                     urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
                     urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
@@ -146,6 +152,10 @@ public class Bus_List_Mapping_API {
 
                             databaseReference3 = database.getReference("-고속버스").child("-정류장LIST");
                             databaseReference3.child(arrayList.get(start).getTerminalNm()).child("station_use").setValue("운영중");
+
+
+
+
                             // Toast.makeText(Place_Bus_Intercity.this, start + " 완료", Toast.LENGTH_SHORT).show();
                         }
                     }

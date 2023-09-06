@@ -181,10 +181,9 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
                     }
 
 
-
                     arrayList_real = new ArrayList<>();
                     database_real = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-                    databaseReference_real = database_real.getReference("-고속버스").child("-정류장매칭LIST");
+                    databaseReference_real = database_real.getReference("-고속버스").child("-정류장매칭 check");
                     databaseReference_real.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

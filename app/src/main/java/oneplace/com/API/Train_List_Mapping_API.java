@@ -34,6 +34,7 @@ public class Train_List_Mapping_API {
     DatabaseReference databaseReference;
     DatabaseReference databaseReference2;
     DatabaseReference databaseReference3;
+    DatabaseReference databaseReference4;
 
     NodeList nlList;
     Node nValue;
@@ -59,6 +60,9 @@ public class Train_List_Mapping_API {
         for (start = arrayListADD.size()-1; start < arrayList.size(); start++) {
             for (finall = 0; finall < arrayList.size(); finall++) {
                 try {
+                    database2 = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+                    databaseReference4 = database2.getReference("-기차역").child("-기차역매칭 check");
+                    databaseReference4.child(arrayList.get(start).getNodename()).child(arrayList.get(start).getNodename()).child("check").setValue("ok");
 
                     System.out.println(arrayList.size()+"\n");
                     System.out.println(start+"      "+finall+"\n");
@@ -145,6 +149,9 @@ public class Train_List_Mapping_API {
 
                             databaseReference3 = database2.getReference("-기차역").child("-기차역LIST");
                             databaseReference3.child(arrayList.get(start).getNodename()).child("station_use").setValue("운영중");
+
+
+
                         }
                     }
 

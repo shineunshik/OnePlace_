@@ -6,6 +6,7 @@ public class Ob_Train_Choice {
     String final_nodename;
     String start_nodeid;
     String start_nodename;
+    String check;
 
     public Ob_Train_Choice(){
 
@@ -41,5 +42,13 @@ public class Ob_Train_Choice {
 
     public void setStart_nodename(String start_nodename) {
         this.start_nodename = start_nodename;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
     }
 }
