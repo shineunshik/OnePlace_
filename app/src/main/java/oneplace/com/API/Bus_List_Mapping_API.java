@@ -61,7 +61,7 @@ public class Bus_List_Mapping_API {
     public void bus_station_Info(ArrayList<Ob_Bus_Station_list> arrayList, ArrayList<Ob_Bus_Station_Info_list> arrayLIST_ADD)throws IOException {
 
 
-        for (start=arrayLIST_ADD.size(); start <= arrayList.size(); start++) {
+        for (start=arrayLIST_ADD.size()-1; start <= arrayList.size(); start++) {
             for (finall = 0; finall < arrayList.size(); finall++) {
 
                 try {

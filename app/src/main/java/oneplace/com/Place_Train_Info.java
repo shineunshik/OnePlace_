@@ -196,7 +196,7 @@ public class Place_Train_Info extends AppCompatActivity {
                     arrayList_real = new ArrayList<>();
                     database_real=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
                     databaseReference_real=database_real.getReference("-기차역").child("-기차역매칭LIST");
-                    databaseReference_real.addValueEventListener(new ValueEventListener() {
+                    databaseReference_real.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             try {

@@ -56,7 +56,7 @@ public class Train_List_Mapping_API {
     //각 열차가 도착하는 역 발췌 //75에 250부터 시작
     public void Train_station_Info(ArrayList<Ob_Train_Info> arrayList, ArrayList<Ob_Train_Choice> arrayListADD)throws IOException {
 
-        for (start = arrayListADD.size(); start < arrayList.size(); start++) {
+        for (start = arrayListADD.size()-1; start < arrayList.size(); start++) {
             for (finall = 0; finall < arrayList.size(); finall++) {
                 try {
 
