@@ -60,18 +60,18 @@ public class Place_Hospital extends AppCompatActivity {
         setContentView(R.layout.place_hospital);
 
 
-        hospital_list_add_api  = new Hospital_List_Add_API();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    hospital_list_add_api.Hospital_Input();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
+//        hospital_list_add_api  = new Hospital_List_Add_API();
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    hospital_list_add_api.Hospital_Input();
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        }).start();
 
 
 

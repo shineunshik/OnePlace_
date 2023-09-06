@@ -129,10 +129,23 @@ public class Train_List_Add_API {
                     Element eElement_item = (Element) nNode_item;
                     database= FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
                     databaseReference=database.getReference("-기차역").child("-기차역LIST");
-                    databaseReference.child(getTagValue("nodename", eElement_item)).child("nodeid").setValue(getTagValue("nodeid", eElement_item));
-                    databaseReference.child(getTagValue("nodename", eElement_item)).child("nodename").setValue(getTagValue("nodename", eElement_item));
-                    databaseReference.child(getTagValue("nodename", eElement_item)).child("address").setValue("경상남도");
-                    databaseReference.child(getTagValue("nodename", eElement_item)).child("station_use").setValue("");
+
+                    try {
+                        databaseReference.child(getTagValue("nodename", eElement_item)).child("nodeid").setValue(getTagValue("nodeid", eElement_item));
+                    }catch (NullPointerException e){}
+                    try {
+                        databaseReference.child(getTagValue("nodename", eElement_item)).child("nodename").setValue(getTagValue("nodename", eElement_item));
+                    }catch (NullPointerException e){}
+                    try {
+                        databaseReference.child(getTagValue("nodename", eElement_item)).child("address").setValue("경상남도");
+                    }catch (NullPointerException e){}
+                    try {
+                        databaseReference.child(getTagValue("nodename", eElement_item)).child("station_use").setValue("");
+                    }catch (NullPointerException e){}
+
+
+
+
                 }
             }
 

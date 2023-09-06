@@ -147,19 +147,75 @@ public class Hospital_List_Add_API {
                             databaseReference=database.getReference("-병원").child("-응급실LIST");
 
                             HashMap<String, Object> value = new HashMap<>();
-                            value.put("dutyAddr",getTagValue("dutyAddr", eElement_item));
-                            value.put("dutyEmcls",getTagValue("dutyEmcls", eElement_item));
-                            value.put("dutyEmclsName",getTagValue("dutyEmclsName", eElement_item));
-                            value.put("dutyName",getTagValue("dutyName", eElement_item));
-                            value.put("dutyTel1",getTagValue("dutyTel1", eElement_item));
-                            value.put("dutyTel3",getTagValue("dutyTel3", eElement_item));
-                            value.put("hpid",getTagValue("hpid", eElement_item));
-                            value.put("phpid",getTagValue("phpid", eElement_item));
-                            value.put("rnum",getTagValue("rnum", eElement_item));
-                            value.put("wgs84Lat",getTagValue("wgs84Lat", eElement_item));
-                            value.put("wgs84Lon",getTagValue("wgs84Lon", eElement_item));
-                            databaseReference.child(getTagValue("hpid", eElement_item)).setValue(value);
+//                            value.put("dutyAddr",getTagValue("dutyAddr", eElement_item));
+//                            value.put("dutyEmcls",getTagValue("dutyEmcls", eElement_item));
+//                            value.put("dutyEmclsName",getTagValue("dutyEmclsName", eElement_item));
+//                            value.put("dutyName",getTagValue("dutyName", eElement_item));
+//                            value.put("dutyTel1",getTagValue("dutyTel1", eElement_item));
+//                            value.put("dutyTel3",getTagValue("dutyTel3", eElement_item));
+//                            value.put("hpid",getTagValue("hpid", eElement_item));
+//                            value.put("phpid",getTagValue("phpid", eElement_item));
+//                            value.put("rnum",getTagValue("rnum", eElement_item));
+//                            value.put("wgs84Lat",getTagValue("wgs84Lat", eElement_item));
+//                            value.put("wgs84Lon",getTagValue("wgs84Lon", eElement_item));
+//                            databaseReference.child(getTagValue("hpid", eElement_item)).setValue(value);
+//                            System.out.println("\n\n"+getTagValue("dutyName", eElement_item)+"\n\n");
 
+                            try {
+                                value.put("dutyAddr",getTagValue("dutyAddr", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("dutyEmcls",getTagValue("dutyEmcls", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("dutyEmclsName",getTagValue("dutyEmclsName", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("dutyName",getTagValue("dutyName", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("dutyTel1",getTagValue("dutyTel1", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("dutyTel3",getTagValue("dutyTel3", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("hpid",getTagValue("hpid", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("phpid",getTagValue("phpid", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("rnum",getTagValue("rnum", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            } try {
+                                value.put("wgs84Lat",getTagValue("wgs84Lat", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            try {
+                                value.put("wgs84Lon",getTagValue("wgs84Lon", eElement_item));
+                            }
+                            catch (NullPointerException e){
+                            }
+                            databaseReference.child(getTagValue("hpid", eElement_item)).setValue(value);
 //                            databaseReference.child(getTagValue("hpid", eElement_item)).child("dutyAddr").setValue(getTagValue("dutyAddr", eElement_item));
 //                            databaseReference.child(getTagValue("hpid", eElement_item)).child("dutyEmcls").setValue(getTagValue("dutyEmcls", eElement_item));
 //                            databaseReference.child(getTagValue("hpid", eElement_item)).child("dutyEmclsName").setValue(getTagValue("dutyEmclsName", eElement_item));

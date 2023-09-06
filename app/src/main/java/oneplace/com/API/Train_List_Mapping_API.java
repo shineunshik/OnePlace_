@@ -1,15 +1,9 @@
 package oneplace.com.API;
 
-import android.app.Activity;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,14 +23,22 @@ import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import oneplace.com.Ob_Bus_Station_Info_list;
-import oneplace.com.Ob_Bus_Station_list;
-import oneplace.com.Place_Bus_Intercity;
+import oneplace.com.Ob_Train_Choice;
+import oneplace.com.Ob_Train_Info;
+import oneplace.com.Place_Train_Info;
 
-public class Bus_List_Mapping_API {
+public class Train_List_Mapping_API {
+
+    FirebaseDatabase database;
+    FirebaseDatabase database2;
+    DatabaseReference databaseReference;
+    DatabaseReference databaseReference2;
+    DatabaseReference databaseReference3;
+
     NodeList nlList;
     Node nValue;
-
+    int start,finall;
+    NodeList nList_item,nList_item2;
     StringBuilder urlBuilder ;
     URL url;
     HttpURLConnection httpURLConnection;
@@ -46,43 +48,38 @@ public class Bus_List_Mapping_API {
     Document document;
     Node nNode_item ;
     Element eElement_item;
-    Node nNode_item2 ;
+
+    Node nNode_item2;
+
     Element eElement_item2 ;
-    int start,finall;
-    NodeList nList_item,nList_item2;
 
-    FirebaseDatabase database;
-    DatabaseReference databaseReference;
-    DatabaseReference databaseReference3;
-    ArrayList<Ob_Bus_Station_Info_list> arrayList_real;
-    int add;
+    //각 열차가 도착하는 역 발췌 //75에 250부터 시작
+    public void Train_station_Info(ArrayList<Ob_Train_Info> arrayList, ArrayList<Ob_Train_Choice> arrayListADD)throws IOException {
 
-    //각 열차가 도착하는 역 발췌 완료
-    public void bus_station_Info(ArrayList<Ob_Bus_Station_list> arrayList, ArrayList<Ob_Bus_Station_Info_list> arrayLIST_ADD)throws IOException {
-
-
-        for (start=arrayLIST_ADD.size(); start <= arrayList.size(); start++) {
+        for (start = arrayListADD.size(); start < arrayList.size(); start++) {
             for (finall = 0; finall < arrayList.size(); finall++) {
-
                 try {
+
                     System.out.println(arrayList.size()+"\n");
                     System.out.println(start+"      "+finall+"\n");
-                    System.out.println(start + "번째 출발지 : " + arrayList.get(start).getTerminalNm());
-                    System.out.println("도착지 : " + arrayList.get(finall).getTerminalNm() + " " + finall + "번째 시작  " + start);
 
-                    urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/ExpBusInfoService/getStrtpntAlocFndExpbusInfo"); /*URL*/
+                    System.out.println(start + "번째 출발지 : " + arrayList.get(start).getNodename());
+                    System.out.println("도착지 : " + arrayList.get(finall).getNodename() + " " + finall + "번째 시작  " + start);
 
-                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-                    // urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
-                    //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
+
+
+                    urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getStrtpntAlocFndTrainInfo"); /*URL*/
+
+                    ///  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
+                    //urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
                     urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                     urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
                     urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
-                    urlBuilder.append("&" + URLEncoder.encode("depTerminalId", "UTF-8") + "=" + URLEncoder.encode(arrayList.get(start).getTerminalId(), "UTF-8")); /*출발터미널ID*/
-                    urlBuilder.append("&" + URLEncoder.encode("arrTerminalId", "UTF-8") + "=" + URLEncoder.encode(arrayList.get(finall).getTerminalId(), "UTF-8")); /*도착터미널ID*/
-                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime", "UTF-8") + "=" + URLEncoder.encode("20230905", "UTF-8")); /*출발일(YYYYMMDD)*/
-                    urlBuilder.append("&" + URLEncoder.encode("busGradeId", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*버스등급*/
-
+                    urlBuilder.append("&" + URLEncoder.encode("depPlaceId", "UTF-8") + "=" + URLEncoder.encode(arrayList.get(start).getNodeid(), "UTF-8")); /*출발기차역ID [상세기능3. 시/도별 기차역 목록조회]에서 조회 가능*/
+                    urlBuilder.append("&" + URLEncoder.encode("arrPlaceId", "UTF-8") + "=" + URLEncoder.encode(arrayList.get(finall).getNodeid(), "UTF-8")); /*도착기차역ID [상세기능3. 시/도별 기차역 목록조회]에서 조회 가능*/
+                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime", "UTF-8") + "=" + URLEncoder.encode("20230903", "UTF-8")); /*출발일(YYYYMMDD)*/
+                    urlBuilder.append("&" + URLEncoder.encode("trainGradeCode", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*차량종류코드*/
 
                     url = new URL(urlBuilder.toString());
                     httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -120,33 +117,34 @@ public class Bus_List_Mapping_API {
                         eElement_item = (Element) nNode_item;
                         if (nNode_item.getNodeType() == Node.ELEMENT_NODE) {
 
+                            database2 = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+                            databaseReference2 = database2.getReference("-기차역").child("-기차역매칭LIST");
 
-                            database = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-                            databaseReference = database.getReference("-고속버스").child("-정류장매칭LIST");
                             HashMap<String, Object> value = new HashMap<>();
                             try {
-                                value.put("final_nodename",getTagValue("arrPlaceNm", eElement_item));
+                                value.put("final_nodename",getTagValue("arrplacename", eElement_item));
                             }
                             catch (NullPointerException e){
 
                             }
                             try {
-                                value.put("start_nodename",getTagValue("depPlaceNm", eElement_item));   //<- 기차처럼 적용하기 어레이리스트로 돌리니까 값이 엉떵한게 들어감
+                                value.put("start_nodename",getTagValue("depplacename", eElement_item));
                             }
                             catch (NullPointerException e){
 
                             }
 
-                            databaseReference.child(arrayList.get(start).getTerminalNm()).child(getTagValue("arrPlaceNm", eElement_item)).setValue(value);
 
-//                                       databaseReference2.child(arrayList.get(start).getTerminalNm()).child(arrayList.get(finall).getTerminalNm()).child("final_nodeid").setValue(arrayList.get(finall).getTerminalId());
-//                                       databaseReference2.child(arrayList.get(start).getTerminalNm()).child(arrayList.get(finall).getTerminalNm()).child("final_nodename").setValue(arrayList.get(finall).getTerminalNm());
-//                                       databaseReference2.child(arrayList.get(start).getTerminalNm()).child(arrayList.get(finall).getTerminalNm()).child("start_nodeid").setValue(arrayList.get(start).getTerminalId());
-//                                       databaseReference2.child(arrayList.get(start).getTerminalNm()).child(arrayList.get(finall).getTerminalNm()).child("start_nodename").setValue(arrayList.get(start).getTerminalNm());
+                            databaseReference2.child(arrayList.get(start).getNodename()).child(getTagValue("arrplacename", eElement_item)).setValue(value);
 
-                            databaseReference3 = database.getReference("-고속버스").child("-정류장LIST");
-                            databaseReference3.child(arrayList.get(start).getTerminalNm()).child("station_use").setValue("운영중");
-                            // Toast.makeText(Place_Bus_Intercity.this, start + " 완료", Toast.LENGTH_SHORT).show();
+
+//                                    databaseReference2.child(arrayList.get(start).getNodename()).child(arrayList.get(finall).getNodename()).child("final_nodeid").setValue(arrayList.get(finall).getNodeid());
+//                                    databaseReference2.child(arrayList.get(start).getNodename()).child(arrayList.get(finall).getNodename()).child("final_nodename").setValue(arrayList.get(finall).getNodename());
+//                                    databaseReference2.child(arrayList.get(start).getNodename()).child(arrayList.get(finall).getNodename()).child("start_nodeid").setValue(arrayList.get(start).getNodeid());
+//                                    databaseReference2.child(arrayList.get(start).getNodename()).child(arrayList.get(finall).getNodename()).child("start_nodename").setValue(arrayList.get(start).getNodename());
+
+                            databaseReference3 = database2.getReference("-기차역").child("-기차역LIST");
+                            databaseReference3.child(arrayList.get(start).getNodename()).child("station_use").setValue("운영중");
                         }
                     }
 
@@ -157,17 +155,15 @@ public class Bus_List_Mapping_API {
                             nNode_item2 = nList_item2.item(0);
                             if (nNode_item2.getNodeType() == Node.ELEMENT_NODE) {
                                 eElement_item2 = (Element) nNode_item2;
-                                System.out.println(getTagValue("returnAuthMsg", eElement_item2) + "     " + arrayList.get(finall).getTerminalNm());
-
+                                System.out.println(getTagValue("returnAuthMsg", eElement_item2) + "     " + arrayList.get(finall).getNodename());
+                                // ActivityCompat.finishAffinity(Place_Train_Info.this);
                                 //onDestroy(); //트래픽초과로 데이터를 받지 못하면 로그를 남기고 앱 완전 종료
                                 return;
                             }
 
                         }
-                    } catch (NullPointerException nullPointerException) {
-
+                    } catch (NullPointerException e) {
                     }
-                    System.out.println("도착지 : " + arrayList.get(finall).getTerminalNm() + " " + finall + "번째 완료완료" + "\n\n");
 
 
 
@@ -184,18 +180,15 @@ public class Bus_List_Mapping_API {
                 }catch (NullPointerException e){
                     System.out.println("NullPointerException : 실패");
                     e.printStackTrace();
-                }catch (IndexOutOfBoundsException e){
+                }
+                catch (IndexOutOfBoundsException e){
 
                 }
+
+
+
             }
         }
-
-
-
-
-
-
-
     }
 
 
@@ -208,6 +201,7 @@ public class Bus_List_Mapping_API {
 
         return nValue.getNodeValue();
     }
+
 
 
 }

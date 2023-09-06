@@ -92,6 +92,9 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
     Bus_List_Add_API bus_list_Add_api;
     Bus_List_Mapping_API bus_list_mapping_api;
 
+    FirebaseDatabase database_real;
+    DatabaseReference databaseReference_real;
+    ArrayList<Ob_Bus_Station_Info_list> arrayList_real;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,9 +102,10 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
 
         get_save_set_save_day();
 
-        bus_list_Add_api = new Bus_List_Add_API();
+
         bus_list_mapping_api=new Bus_List_Mapping_API();
 
+//        bus_list_Add_api = new Bus_List_Add_API();
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -176,16 +180,50 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
                         arrayList.add(dataSnapshot.getValue(Ob_Bus_Station_list.class));
                     }
 
-                    new Thread(new Runnable() {
+
+
+                    arrayList_real = new ArrayList<>();
+                    database_real = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+                    databaseReference_real = database_real.getReference("-고속버스").child("-정류장매칭LIST");
+                    databaseReference_real.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void run() {
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                             try {
-                                bus_list_mapping_api.bus_station_Info(arrayList);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                                arrayList_real.clear();
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                    arrayList_real.add(dataSnapshot.getValue(Ob_Bus_Station_Info_list.class));
+                                }
+                                System.out.println("\n\n\n 총 어레이"+arrayList_real.size()+"\n\n\n");
+
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            bus_list_mapping_api.bus_station_Info(arrayList,arrayList_real);
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                }).start();
+
+
                             }
+                            catch (NullPointerException e){
+
+                            }
+
+
                         }
-                    }).start();
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
 
 
 

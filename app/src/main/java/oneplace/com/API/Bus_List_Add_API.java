@@ -132,9 +132,23 @@ public class Bus_List_Add_API {
 
                     database= FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
                     databaseReference=database.getReference("-고속버스").child("-정류장LIST");
-                    databaseReference.child(getTagValue("terminalNm", eElement_item)).child("terminalId").setValue(getTagValue("terminalId", eElement_item));
-                    databaseReference.child(getTagValue("terminalNm", eElement_item)).child("terminalNm").setValue(getTagValue("terminalNm", eElement_item));
-                    databaseReference.child(getTagValue("terminalNm", eElement_item)).child("station_use").setValue("");
+
+                    try {
+                        databaseReference.child(getTagValue("terminalNm", eElement_item)).child("terminalId").setValue(getTagValue("terminalId", eElement_item));
+                    }
+                    catch (NullPointerException e){ }
+                    try {
+                        databaseReference.child(getTagValue("terminalNm", eElement_item)).child("terminalNm").setValue(getTagValue("terminalNm", eElement_item));
+                    }
+                    catch (NullPointerException e){ }
+                    try {
+                        databaseReference.child(getTagValue("terminalNm", eElement_item)).child("station_use").setValue("");
+                    }
+                    catch (NullPointerException e){ }
+
+
+
+
 
 
                 }
