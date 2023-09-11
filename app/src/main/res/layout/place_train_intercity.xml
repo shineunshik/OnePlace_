@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Place_Bus_Station_Info">
-
-
+    tools:context=".Place_Bus_Intercity">
     <LinearLayout
-        android:orientation="vertical"
+        android:paddingVertical="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <TextView
-            android:padding="10dp"
+            android:textSize="18dp"
             android:gravity="center"
-            android:layout_gravity="center"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:text="기차역"
-            android:id="@+id/terminalNm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
-
     <LinearLayout
+        android:paddingVertical="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <Spinner
+            android:spinnerMode="dialog"
+            android:id="@+id/address_choice"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/area_move"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="지역 이동"/>
+
         <TextView
             android:padding="10dp"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:text="날짜"
             android:id="@+id/day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="날짜"/>
+
+
     </LinearLayout>
-
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -54,32 +63,17 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/yes_date"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/no_date"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/notice"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerview"/>
+
+    </LinearLayout>
 
 </LinearLayout>

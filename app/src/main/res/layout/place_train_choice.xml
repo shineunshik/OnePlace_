@@ -77,12 +77,7 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-
-
         </LinearLayout>
-
-
-
 
         <LinearLayout
             android:background="@drawable/train_choice_backgound_bottom"

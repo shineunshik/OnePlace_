@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class CusTomAdapter_Train_Choice_list extends RecyclerView.Adapter<CusTomAdapter_Train_Choice_list.CustomViewHolder> {
+public class CusTomAdapter_Bus_Station_Choice_list extends RecyclerView.Adapter<CusTomAdapter_Bus_Station_Choice_list.CustomViewHolder> {
     ArrayList<Ob_Station_Choice> arrayList;
     Context context;
     String select_address;
@@ -30,7 +30,7 @@ public class CusTomAdapter_Train_Choice_list extends RecyclerView.Adapter<CusTom
     String start_nodeID="";
     String final_nodeID="";
     String day_save;
-    public CusTomAdapter_Train_Choice_list(ArrayList<Ob_Station_Choice> arrayList, Context context){
+    public CusTomAdapter_Bus_Station_Choice_list(ArrayList<Ob_Station_Choice> arrayList, Context context){
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -39,7 +39,7 @@ public class CusTomAdapter_Train_Choice_list extends RecyclerView.Adapter<CusTom
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.train_station_choice_list_form,parent,false);
-        CusTomAdapter_Train_Choice_list.CustomViewHolder customViewHolder = new CusTomAdapter_Train_Choice_list.CustomViewHolder(view);
+        CusTomAdapter_Bus_Station_Choice_list.CustomViewHolder customViewHolder = new CusTomAdapter_Bus_Station_Choice_list.CustomViewHolder(view);
         return customViewHolder;
     }
 
@@ -68,23 +68,24 @@ public class CusTomAdapter_Train_Choice_list extends RecyclerView.Adapter<CusTom
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             int position = getLayoutPosition();
                             database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-                            databaseReference_start=database.getReference("-기차역").child("-기차역LIST").child(arrayList.get(position).getStart_nodename()).child("nodeid");
+                            databaseReference_start=database.getReference("-고속버스").child("-정류장LIST").child(arrayList.get(position).getStart_nodename()).child("terminalId");
                             databaseReference_start.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     start_nodeID = snapshot.getValue().toString();
 
-                                    databaseReference_final=database.getReference("-기차역").child("-기차역LIST").child(arrayList.get(position).getFinal_nodename()).child("nodeid");
+                                    databaseReference_final=database.getReference("-고속버스").child("-정류장LIST").child(arrayList.get(position).getFinal_nodename()).child("terminalId");
                                     databaseReference_final.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             final_nodeID = snapshot.getValue().toString();
-                                            Intent intent = new Intent(context, Place_Train_Info.class);
+                                            Intent intent = new Intent(context,Place_Bus_Station_Info.class);
                                             intent.putExtra("start_nodeID",start_nodeID);
                                             intent.putExtra("final_nodeID",final_nodeID);
                                             intent.putExtra("start_nodename",arrayList.get(position).getStart_nodename());
@@ -106,10 +107,8 @@ public class CusTomAdapter_Train_Choice_list extends RecyclerView.Adapter<CusTom
                         }
                     }).start();
 
-
                 }
             });
-
 
         }
     }

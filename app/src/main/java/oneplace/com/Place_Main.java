@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -150,7 +149,7 @@ public class Place_Main extends AppCompatActivity {
         train_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Place_Main.this, Place_Train_Info.class);
+                Intent intent = new Intent(Place_Main.this, Place_Train_Intercity.class);
                 startActivity(intent);
             }
         });

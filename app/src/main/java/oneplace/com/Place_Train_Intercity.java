@@ -1,8 +1,8 @@
 package oneplace.com;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,90 +19,68 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import oneplace.com.API.Train_List_Add_API;
+import oneplace.com.API.Train_List_Mapping_API;
 
-import oneplace.com.API.Bus_List_Add_API;
-import oneplace.com.API.Bus_List_Mapping_API;
-
-public class Place_Bus_Intercity extends AppCompatActivity  {
-    Spinner address_choice;
-    RecyclerView recyclerview;
-    ArrayList<Ob_Bus_Station_list> arrayList;
-    RecyclerView.Adapter adapter,adapter2;
-    String num;
-
+public class Place_Train_Intercity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    String select_area_spinner;
-    TextView day;
+
     String day_save;
-    String month_;
-    String dayOfMonth_;
+    String select_address;
     Dialog Calendar_dialog;
     CalendarView calendar;
+    TextView day;
+    String month_;
+    String dayOfMonth_;
+    RecyclerView.Adapter adapter,adapter2;
+    ArrayList<Ob_Train_Info> arrayList;
+    Spinner address_choice;
+    RecyclerView recyclerview;
+    String key,select_area_spinner;
     SearchView search_view;
-    String select_address;
-    Bus_List_Mapping_API bus_list_mapping_api;
-    Bus_List_Add_API bus_list_Add_api;
-
+    Train_List_Mapping_API train_list_mapping_api;
     FirebaseDatabase database_real;
     DatabaseReference databaseReference_real;
-    ArrayList<Ob_Bus_Station_Info_list> arrayList_real;
+    ArrayList<Ob_Station_Choice> arrayList_real;
+    Train_List_Add_API train_list_add_api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.place_bus_intercity);
+        setContentView(R.layout.place_train_intercity);
 
-        get_save_set_save_day();
-
-
-        bus_list_mapping_api=new Bus_List_Mapping_API();
-
-//        bus_list_Add_api = new Bus_List_Add_API();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    bus_list_Add_api.Bus_select();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//            }
-//        }).start();
-
-
+     //   get_save_set_save_day();
         Calendar_dialog = new Dialog(this);
         Calendar_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //타이틀 제거
         Calendar_dialog.setContentView(R.layout.calendar_view);
         calendar=(CalendarView) Calendar_dialog.findViewById(R.id.calendar);//달력
+
+        train_list_mapping_api = new Train_List_Mapping_API();
+
+//        train_list_add_api = new Train_List_Add_API();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    train_list_add_api.Train_station_list();
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        }).start();
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
@@ -129,9 +107,11 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
                         else {
                             dayOfMonth_=String.valueOf(dayOfMonth);
                         }
+
                         day.setText(String.format("%d",year,dayOfMonth)+month_+dayOfMonth_);
                         day_save=day.getText().toString();
                         set_save_day();
+                        Toast.makeText(Place_Train_Intercity.this,day_save,Toast.LENGTH_SHORT).show();
                         Calendar_dialog.dismiss();
                     }
                 });
@@ -139,64 +119,72 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
             }
         });
 
+        //검색
+        search_view=(SearchView)findViewById(R.id.search_view);
+        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                setSearch_view(text);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                setSearch_view(text);
+                return true;
+            }
+        });
 
         recyclerview=(RecyclerView)findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Place_Bus_Intercity.this);
-     //   linearLayoutManager.setStackFromEnd(true); //포커스가 마지막 포지션으로 감
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Place_Train_Intercity.this);
+        //   linearLayoutManager.setStackFromEnd(true); //포커스가 마지막 포지션으로 감
         recyclerview.setLayoutManager(linearLayoutManager);
         recyclerview.setHasFixedSize(true);
         arrayList = new ArrayList<>();
-        adapter= new CusTomAdapter_Bus_Station_list(arrayList,Place_Bus_Intercity.this);
+        adapter= new CusTomAdapter_Train_Station_list(arrayList, Place_Train_Intercity.this);
         recyclerview.setAdapter(adapter);
 
         database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-        databaseReference=database.getReference("-고속버스").child("-정류장LIST");
+        databaseReference=database.getReference("-기차역").child("-기차역LIST");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
                     arrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        arrayList.add(dataSnapshot.getValue(Ob_Bus_Station_list.class));
+                        arrayList.add(dataSnapshot.getValue(Ob_Train_Info.class));
                     }
 
 
                     arrayList_real = new ArrayList<>();
-                    database_real = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-                    databaseReference_real = database_real.getReference("-고속버스").child("-정류장매칭 check");
+                    database_real=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+                    databaseReference_real=database_real.getReference("-기차역").child("-기차역매칭 check");
                     databaseReference_real.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                             try {
                                 arrayList_real.clear();
                                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                    arrayList_real.add(dataSnapshot.getValue(Ob_Bus_Station_Info_list.class));
+                                    arrayList_real.add(dataSnapshot.getValue(Ob_Station_Choice.class));
                                 }
-                                System.out.println("\n\n\n check 총 어레이"+arrayList_real.size()+"\n\n\n");
-                                System.out.println("\n\n\n list 총 어레이"+arrayList.size()+"\n\n\n");
 
-//
-//                                new Thread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        try {
-//                                            bus_list_mapping_api.bus_station_Info(arrayList,arrayList_real);
-//                                        } catch (IOException e) {
-//                                            throw new RuntimeException(e);
-//                                        }
-//                                    }
-//                                }).start();
+                                // 각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단  (원주부터 진행)
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            train_list_mapping_api.Train_station_Info(arrayList,arrayList_real);
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                }).start();
 
 
                             }
-                            catch (NullPointerException e){
-
+                            catch (NullPointerException nullPointerException){
                             }
-
-
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
@@ -217,33 +205,23 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
 
             }
         });
-        Collections.sort(arrayList, new Comparator<Ob_Bus_Station_list>() {
+
+        Collections.sort(arrayList, new Comparator<Ob_Train_Info>() {
             @Override
-            public int compare(Ob_Bus_Station_list o1, Ob_Bus_Station_list o2) {
+            public int compare(Ob_Train_Info o1, Ob_Train_Info o2) {
                 return o1.getAddress().compareTo(o2.getAddress());
             }
         });
 
 
-        search_view=(SearchView)findViewById(R.id.search_view);
-        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String text) {
-                setSearch_view(text);
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String text) {
-                setSearch_view(text);
-                return true;
-            }
-        });
+
+
 
 
         //지역 선택
         address_choice =(Spinner) findViewById(R.id.address_choice);
-        ArrayAdapter<CharSequence> adapter_spinner = ArrayAdapter.createFromResource(this,R.array.intercity_bus_address,R.layout.address_spinner_login);
+        ArrayAdapter<CharSequence> adapter_spinner = ArrayAdapter.createFromResource(this,R.array.train_station_address,R.layout.address_spinner_login);
         address_choice.setAdapter(adapter_spinner);
         address_choice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -254,16 +232,17 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
                 }
                 else {
                     select_area_spinner =address_choice.getSelectedItem().toString();//선택한 spinner항목 문자열 변환
-                    ArrayList<Ob_Bus_Station_list> myList = new ArrayList<>();
-                    for (Ob_Bus_Station_list ob_bus_station_list : arrayList){
-                        if (ob_bus_station_list.getAddress().toLowerCase().contains(select_area_spinner)){
-                            myList.add(ob_bus_station_list);
+                    ArrayList<Ob_Train_Info> myList = new ArrayList<>();
+                    for (Ob_Train_Info ob_train_info : arrayList){
+                        if (ob_train_info.getAddress().toLowerCase().contains(select_area_spinner)){
+                            myList.add(ob_train_info);
                         }
                     }
-                    adapter2 = new CusTomAdapter_Bus_Station_list(myList,Place_Bus_Intercity.this);
+                    adapter2 = new CusTomAdapter_Train_Station_list(myList, Place_Train_Intercity.this);
                     recyclerview.setAdapter(adapter2);
                     adapter.notifyDataSetChanged();
                 }
+
 
             }
 
@@ -273,21 +252,27 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
             }
         });
 
-     }
 
+
+
+    }
 
 
     public void  setSearch_view(String charText){
-        ArrayList<Ob_Bus_Station_list> myList1 = new ArrayList<>();
-        for (Ob_Bus_Station_list ob_bus_station_list : arrayList){
-            if (ob_bus_station_list.getAddress().toLowerCase().contains(charText.toLowerCase())||ob_bus_station_list.getTerminalNm().toLowerCase().contains(charText.toLowerCase())){
-                myList1.add(ob_bus_station_list);
+        ArrayList<Ob_Train_Info> myList = new ArrayList<>();
+        for (Ob_Train_Info ob_train_info : arrayList){
+            if (ob_train_info.getAddress().toLowerCase().contains(charText.toLowerCase())||ob_train_info.getNodename().toLowerCase().contains(charText.toLowerCase())){
+                myList.add(ob_train_info);
             }
         }
-        adapter = new CusTomAdapter_Bus_Station_list(myList1,Place_Bus_Intercity.this);
+        adapter = new CusTomAdapter_Train_Station_list(myList, Place_Train_Intercity.this);
         recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
+
+
+
 
 
 
@@ -307,5 +292,4 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
         SharedPreferences get_save_select_address = getSharedPreferences("save_select_address",MODE_PRIVATE);
         select_address = get_save_select_address.getString("save_select_address_key","");
     }
-
 }

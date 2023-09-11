@@ -1,7 +1,5 @@
 package oneplace.com.API;
 
-import android.widget.Toast;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,9 +21,8 @@ import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import oneplace.com.Ob_Train_Choice;
+import oneplace.com.Ob_Station_Choice;
 import oneplace.com.Ob_Train_Info;
-import oneplace.com.Place_Train_Info;
 
 public class Train_List_Mapping_API {
 
@@ -54,12 +51,11 @@ public class Train_List_Mapping_API {
 
     Element eElement_item2 ;
 
-    //각 열차가 도착하는 역 발췌 //75에 250부터 시작
-    public void Train_station_Info(ArrayList<Ob_Train_Info> arrayList, ArrayList<Ob_Train_Choice> arrayListADD)throws IOException {
+    //각 기차가 도착하는 역 발췌 //75에 250부터 시작
+    public void Train_station_Info(ArrayList<Ob_Train_Info> arrayList, ArrayList<Ob_Station_Choice> arrayListADD)throws IOException {
 
-        for (start = arrayListADD.size()-1; start < arrayList.size(); start++) {
-      //  for (start = arrayList.size()-51; start <= arrayList.size(); start--) { //이중작업 -51 창원중앙
-            for (finall = 200; finall < arrayList.size(); finall++) {
+        for (start = arrayListADD.size()-1; start < arrayList.size(); start++) { //창원중앙 하다가 말았음
+            for (finall = 0; finall < arrayList.size(); finall++) {
                 try {
                     database2 = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
                     databaseReference4 = database2.getReference("-기차역").child("-기차역매칭 check");
@@ -75,8 +71,8 @@ public class Train_List_Mapping_API {
 
                     urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getStrtpntAlocFndTrainInfo"); /*URL*/
 
-                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
-                   // urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
+                  //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*/ //은식
                   //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*/ //누나
                   //  urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=7UKWLDjT7ukW6ITVxBJhhXOPrJk1GTEBjvP0XxpKSfMzwJdyattGZ34cThSbqCAirEoqcd3T6B5Xj9soynkiZA%3D%3D"); /*Service Key*/ //혜경
                     urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -165,7 +161,7 @@ public class Train_List_Mapping_API {
                             if (nNode_item2.getNodeType() == Node.ELEMENT_NODE) {
                                 eElement_item2 = (Element) nNode_item2;
                                 System.out.println(getTagValue("returnAuthMsg", eElement_item2) + "     " + arrayList.get(finall).getNodename());
-                                // ActivityCompat.finishAffinity(Place_Train_Info.this);
+                                // ActivityCompat.finishAffinity(Place_Train_Intercity.this);
                                 //onDestroy(); //트래픽초과로 데이터를 받지 못하면 로그를 남기고 앱 완전 종료
                                 return;
                             }

@@ -43,7 +43,19 @@ public class CusTomAdapter_Bus_Station_list extends RecyclerView.Adapter<CusTomA
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         get_save_select_address();
 
-
+//        //조회시점에 데이터가 없음 터미널 추출
+//        try {
+//            if (arrayList.get(position).getStation_use()==null){
+//                database = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+//                databaseReference = database.getReference("-고속버스").child("-정류장매칭 check");
+//                databaseReference.child(arrayList.get(position).getTerminalNm()).child(arrayList.get(position).getTerminalNm()).child("check").setValue("ok");
+//            }
+//
+//        }catch (NullPointerException e){
+//            database = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
+//            databaseReference = database.getReference("-고속버스").child("-정류장매칭 check");
+//            databaseReference.child(arrayList.get(position).getTerminalNm()).child(arrayList.get(position).getTerminalNm()).child("check").setValue("ok");
+//        }
 
 
 
@@ -224,7 +236,7 @@ public class CusTomAdapter_Bus_Station_list extends RecyclerView.Adapter<CusTomA
                 public void onClick(View v) {
                     get_save_set_save_day();
                     int position = getLayoutPosition();
-                    Intent intent = new Intent(context, Place_Bus_Station_Info.class);
+                    Intent intent = new Intent(context, Place_Bus_Station_Choice.class);
                     intent.putExtra("terminalId",arrayList.get(position).getTerminalId());
                     intent.putExtra("terminalNm",arrayList.get(position).getTerminalNm());
                     intent.putExtra("day_save",day_save);

@@ -3,7 +3,6 @@ package oneplace.com;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +18,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class CusTomAdapter_Bus_Station_Info_list extends RecyclerView.Adapter<CusTomAdapter_Bus_Station_Info_list.CustomViewHolder> {
-    ArrayList<Ob_Bus_Station_Info_list> arrayList;
+public class CusTomAdapter_Train_Info_list extends RecyclerView.Adapter<CusTomAdapter_Train_Info_list.CustomViewHolder> {
+    ArrayList<Ob_Train_Station_Info_list> arrayList;
     Context context;
     String select_address;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    public CusTomAdapter_Bus_Station_Info_list(ArrayList<Ob_Bus_Station_Info_list> arrayList, Context context){
+    public CusTomAdapter_Train_Info_list(ArrayList<Ob_Train_Station_Info_list> arrayList, Context context){
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -34,54 +33,48 @@ public class CusTomAdapter_Bus_Station_Info_list extends RecyclerView.Adapter<Cu
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bus_station_list_info_form,parent,false);
-        CusTomAdapter_Bus_Station_Info_list.CustomViewHolder customViewHolder = new CusTomAdapter_Bus_Station_Info_list.CustomViewHolder(view);
+        CusTomAdapter_Train_Info_list.CustomViewHolder customViewHolder = new CusTomAdapter_Train_Info_list.CustomViewHolder(view);
         return customViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         get_save_select_address();
-        if (arrayList.get(position).getArrPlaceNm()==null||arrayList.get(position).getDepPlaceNm()==null){
-            arrayList.remove(position);
-        }
-        else {
 
             try {
-                holder.start_station.setText("출발지 : "+arrayList.get(position).getDepPlaceNm());
+                holder.start_station.setText("출발지 : "+arrayList.get(position).getDepplacename());
             }
             catch (NullPointerException e){
             }
 
             try {
-                holder.start_station_time.setText("출발시간 : "+arrayList.get(position).getDepPlandTime().substring(8,10)+"시 "+arrayList.get(position).getDepPlandTime().substring(10,12)+"분");
+                holder.start_station_time.setText("출발시간 : "+arrayList.get(position).getDepplandtime().substring(8,10)+"시 "+arrayList.get(position).getDepplandtime().substring(10,12)+"분");
             }
             catch (NullPointerException e){
             }
 
             try {
-                holder.last_station.setText("도착지 : "+arrayList.get(position).getArrPlaceNm());
+                holder.last_station.setText("도착지 : "+arrayList.get(position).getArrplacename());
             }
             catch (NullPointerException e){
             }
 
             try {
-                holder.last_station_time.setText("도착시간(예상) : "+arrayList.get(position).getArrPlandTime().substring(8,10)+"시 "+arrayList.get(position).getArrPlandTime().substring(10,12)+"분");
+                holder.last_station_time.setText("도착시간(예상) : "+arrayList.get(position).getArrplandtime().substring(8,10)+"시 "+arrayList.get(position).getArrplandtime().substring(10,12)+"분");
             }
             catch (NullPointerException e){
             }
 
             try {
-                holder.bus_grade.setText("버스등급 : "+arrayList.get(position).getGradeNm());
+                holder.bus_grade.setText("기차 종류 : "+arrayList.get(position).getTraingradename());
             }
             catch (NullPointerException e){
             }
 
             try {
-                int bus_charge = Integer.parseInt(arrayList.get(position).getCharge());
+                int bus_charge = Integer.parseInt(arrayList.get(position).getAdultcharge());
                 DecimalFormat decimalFormat = new DecimalFormat("###,###");
                 String bus_charge2 = decimalFormat.format(bus_charge);
-                holder.charge.setText("요금 : "+bus_charge2+"원");
-
                 if (bus_charge2.equals("0")){
                     holder.charge.setText("요금 : "+"요금 정보 없음");
                 }
@@ -91,17 +84,8 @@ public class CusTomAdapter_Bus_Station_Info_list extends RecyclerView.Adapter<Cu
 
             }
             catch (NullPointerException e){
+
             }
-
-
-
-
-
-
-
-        }
-
-
 
 
     }

@@ -1,30 +1,15 @@
 package oneplace.com;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,102 +20,76 @@ import org.xml.sax.SAXException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import oneplace.com.API.Train_List_Add_API;
-import oneplace.com.API.Train_List_Mapping_API;
-
 public class Place_Train_Info extends AppCompatActivity {
-    FirebaseDatabase database;
-    DatabaseReference databaseReference;
 
-    String day_save;
-    String select_address;
-    Dialog Calendar_dialog;
-    CalendarView calendar;
-    TextView day;
-    String month_;
-    String dayOfMonth_;
-    RecyclerView.Adapter adapter,adapter2;
-    ArrayList<Ob_Train_Info> arrayList;
-    Spinner address_choice;
+    NodeList nlList;
+    Node nValue;
     RecyclerView recyclerview;
-    String key,select_area_spinner;
+    ArrayList<Ob_Train_Station_Info_list> arrayList;
+    RecyclerView.Adapter adapter;
+    String num;
+    TextView day;
     SearchView search_view;
-    Train_List_Mapping_API train_list_mapping_api;
-    FirebaseDatabase database_real;
-    DatabaseReference databaseReference_real;
-    ArrayList<Ob_Train_Choice> arrayList_real;
+    LinearLayout yes_date,no_date;
+    TextView notice;
+
+    StringBuilder urlBuilder_total = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getStrtpntAlocFndTrainInfo"); /*URL*/
+    StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/TrainInfoService/getStrtpntAlocFndTrainInfo"); /*URL*/
+    URL url_total,url;
+    HttpURLConnection httpURLConnection_total,httpURLConnection;
+    BufferedReader rd_total,rd;
+    String line_total,line;
+    StringBuilder sb_total,sb;
+    Document document_total,document;
+    NodeList nList_body,nList;
+    Node nNode_body,nNode2;
+    Element eElement_body,eElement2;
+    TextView terminalNm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_train_info);
 
-     //   get_save_set_save_day();
-        Calendar_dialog = new Dialog(this);
-        Calendar_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //타이틀 제거
-        Calendar_dialog.setContentView(R.layout.calendar_view);
-        calendar=(CalendarView) Calendar_dialog.findViewById(R.id.calendar);//달력
-
-        train_list_mapping_api = new Train_List_Mapping_API();
-
-//        train_list_add_api = new Train_List_Add_API();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    train_list_add_api.Train_station_list();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        }).start();
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = new Date();
-        String time = simpleDateFormat.format(date);
         day=(TextView)findViewById(R.id.day);
-        day.setText(time);
-        day_save=day.getText().toString();
-        set_save_day();
-        day.setOnClickListener(new View.OnClickListener() {
+        day.setText(getIntent().getStringExtra("day_save"));
+        terminalNm=(TextView)findViewById(R.id.terminalNm);
+        terminalNm.setText(getIntent().getStringExtra("start_nodename")+"역");
+
+        notice=(TextView)findViewById(R.id.notice);
+        notice.setText("배차 정보 조회 중입니다.\n잠시만 기다려 주세요.");
+        yes_date=(LinearLayout) findViewById(R.id.yes_date);
+        no_date=(LinearLayout) findViewById(R.id.no_date);
+        yes_date.setVisibility(View.GONE);
+        no_date.setVisibility(View.VISIBLE);
+
+        recyclerview=(RecyclerView)findViewById(R.id.recyclerview);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Place_Train_Info.this);
+        //   linearLayoutManager.setStackFromEnd(true); //포커스가 마지막 포지션으로 감
+        recyclerview.setLayoutManager(linearLayoutManager);
+        recyclerview.setHasFixedSize(true);
+        arrayList = new ArrayList<>();
+        adapter= new CusTomAdapter_Train_Info_list(arrayList,Place_Train_Info.this);
+
+        //오름차순,내림차순
+        Collections.sort(arrayList, new Comparator<Ob_Train_Station_Info_list>() {
             @Override
-            public void onClick(View v) {
-                Calendar_dialog.show();
-
-                calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                    @Override
-                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                        month=month+1;
-                        if (month<10){
-                            month_ = "0"+month;
-                        }
-                        if (dayOfMonth<10){
-                            dayOfMonth_ = "0"+dayOfMonth;
-                        }
-                        else {
-                            dayOfMonth_=String.valueOf(dayOfMonth);
-                        }
-
-                        day.setText(String.format("%d",year,dayOfMonth)+month_+dayOfMonth_);
-                        day_save=day.getText().toString();
-                        set_save_day();
-                        Toast.makeText(Place_Train_Info.this,day_save,Toast.LENGTH_SHORT).show();
-                        Calendar_dialog.dismiss();
-                    }
-                });
-
+            public int compare(Ob_Train_Station_Info_list o1, Ob_Train_Station_Info_list o2) {
+                return o1.getArrplacename().compareTo(o2.getArrplacename());
             }
         });
 
@@ -150,161 +109,189 @@ public class Place_Train_Info extends AppCompatActivity {
             }
         });
 
-        recyclerview=(RecyclerView)findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Place_Train_Info.this);
-        //   linearLayoutManager.setStackFromEnd(true); //포커스가 마지막 포지션으로 감
-        recyclerview.setLayoutManager(linearLayoutManager);
-        recyclerview.setHasFixedSize(true);
-        arrayList = new ArrayList<>();
-        adapter= new CusTomAdapter_Train_Station_list(arrayList,Place_Train_Info.this);
-        recyclerview.setAdapter(adapter);
-
-        database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-        databaseReference=database.getReference("-기차역").child("-기차역LIST");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    arrayList.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        arrayList.add(dataSnapshot.getValue(Ob_Train_Info.class));
-                    }
-
-
-                    arrayList_real = new ArrayList<>();
-                    database_real=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
-                    databaseReference_real=database_real.getReference("-기차역").child("-기차역매칭 check");
-                    databaseReference_real.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            try {
-                                arrayList_real.clear();
-                                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                    arrayList_real.add(dataSnapshot.getValue(Ob_Train_Choice.class));
-                                }
-
-                                // 각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단  (원주부터 진행)
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            train_list_mapping_api.Train_station_Info(arrayList,arrayList_real);
-                                        } catch (IOException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }
-                                }).start();
-
-
-                            }
-                            catch (NullPointerException nullPointerException){
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
-
-
-
-                    adapter.notifyDataSetChanged();
-                }
-                catch (NullPointerException nullPointerException){
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        Collections.sort(arrayList, new Comparator<Ob_Train_Info>() {
-            @Override
-            public int compare(Ob_Train_Info o1, Ob_Train_Info o2) {
-                return o1.getAddress().compareTo(o2.getAddress());
-            }
-        });
-
-
-
-
-
-
-
-        //지역 선택
-        address_choice =(Spinner) findViewById(R.id.address_choice);
-        ArrayAdapter<CharSequence> adapter_spinner = ArrayAdapter.createFromResource(this,R.array.train_station_address,R.layout.address_spinner_login);
-        address_choice.setAdapter(adapter_spinner);
-        address_choice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if (adapter_spinner.getItem(position).equals("전체")|adapter_spinner.getItem(position).equals("-")){
-                    recyclerview.setAdapter(adapter);
-                }
-                else {
-                    select_area_spinner =address_choice.getSelectedItem().toString();//선택한 spinner항목 문자열 변환
-                    ArrayList<Ob_Train_Info> myList = new ArrayList<>();
-                    for (Ob_Train_Info ob_train_info : arrayList){
-                        if (ob_train_info.getAddress().toLowerCase().contains(select_area_spinner)){
-                            myList.add(ob_train_info);
-                        }
-                    }
-                    adapter2 = new CusTomAdapter_Train_Station_list(myList,Place_Train_Info.this);
-                    recyclerview.setAdapter(adapter2);
-                    adapter.notifyDataSetChanged();
-                }
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
+        try {
+            Train_Station();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
 
 
+
+    public void Train_Station()throws IOException {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    urlBuilder_total.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*///은식
+                    //urlBuilder_total.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*///누나
+                    //urlBuilder_total.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("depPlaceId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("start_nodeID"), "UTF-8")); /*출발기차역*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("arrPlaceId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("final_nodeID"), "UTF-8")); /*도착기차역*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("day_save"), "UTF-8")); /*출발일(YYYYMMDD)*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("trainGradeCode","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*차량종류코드*/
+
+                    url_total = new URL(urlBuilder_total.toString());
+                    httpURLConnection_total = (HttpURLConnection) url_total.openConnection();
+                    httpURLConnection_total.setRequestMethod("GET");
+                    httpURLConnection_total.setRequestProperty("Content-type", "application/json");
+                    // System.out.println("Response code: " + conn.getResponseCode());
+
+                    if (httpURLConnection_total.getResponseCode() >= 200 && httpURLConnection_total.getResponseCode() <= 300) {
+                        rd_total = new BufferedReader(new InputStreamReader(httpURLConnection_total.getInputStream()));
+                    } else {
+                        rd_total = new BufferedReader(new InputStreamReader(httpURLConnection_total.getErrorStream()));
+                    }
+
+                    sb_total = new StringBuilder();
+                    while ((line_total = rd_total.readLine()) != null) {
+                        sb_total.append(line_total);
+                    }
+                    rd_total.close();
+                    httpURLConnection_total.disconnect();
+                    //API를 사용하기위한 API정보 가져오기(기본 샘플 코드)
+
+                    //xml 데이터를 파싱하기 위한 코드
+                    document_total = DocumentBuilderFactory
+                            .newInstance()
+                            .newDocumentBuilder()
+                            .parse(url_total + "");
+                    document_total.getDocumentElement().normalize();
+
+                    nList_body = document_total.getElementsByTagName("body"); //xml에서 파싱할 리스트명
+                    nNode_body = nList_body.item(0);
+                    eElement_body = (Element) nNode_body;
+                    num= getTagValue("totalCount", eElement_body);
+
+                    urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=mpCKK0vB8d8I%2FXawDUzzlAsLZVdxFbFTUSFg6sBzw9tp3kLhU7H%2Bu2qlNbNaI0IK8gD0NK4Laky19EEQo3qALg%3D%3D"); /*Service Key*///은식
+                   // urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=xqtGro2RZ7GS64DxCIjdBJQt%2B9t0wgxfkVLY8s0I8BHSDYViUtMjayeRWpyr%2BZgS2FsiD%2BVGE5Cv4IcYRae1gA%3D%3D"); /*Service Key*///누나
+                  //  urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=eUOnBahe%2BDndmVjOuchJfBQS29NMywIHXZ4nyfxfWXUgZOKImkTM8ele3iWdA3BDcrXPiqhWar%2BVvjGvmwC8nA%3D%3D"); /*Service Key*/
+                    urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+                    urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(num, "UTF-8")); /*한 페이지 결과 수*/
+                    urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
+                    urlBuilder.append("&" + URLEncoder.encode("depPlaceId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("start_nodeID"), "UTF-8")); /*출발기차역*/
+                    urlBuilder.append("&" + URLEncoder.encode("arrPlaceId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("final_nodeID"), "UTF-8")); /*도착기차역*/
+                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("day_save"), "UTF-8")); /*출발일(YYYYMMDD)*/
+                    urlBuilder.append("&" + URLEncoder.encode("trainGradeCode","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*차량종류코드*/
+                    url = new URL(urlBuilder.toString());
+                    httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("GET");
+                    httpURLConnection.setRequestProperty("Content-type", "application/json");
+
+                    if(httpURLConnection.getResponseCode() >= 200 && httpURLConnection.getResponseCode() <= 300) {
+                        rd = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    } else {
+                        rd = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
+                    }
+                    sb = new StringBuilder();
+                    while ((line = rd.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    rd.close();
+                    httpURLConnection.disconnect();
+                   // System.out.println(sb.toString());
+
+                    //xml 데이터를 파싱하기 위한 코드
+                    document = DocumentBuilderFactory
+                            .newInstance()
+                            .newDocumentBuilder()
+                            .parse(url + "");
+                    document.getDocumentElement().normalize();
+                    nList = document.getElementsByTagName("item"); //xml에서 파싱할 리스트명
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //데이터가 있는지 없는지 확인
+                            if (num.equals("0")){
+                                notice.setText("조회 완료");
+                                Handler handler1 = new Handler();
+                                handler1.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        yes_date.setVisibility(View.GONE);
+                                        no_date.setVisibility(View.VISIBLE);
+                                        notice.setText("기차 운행 정보가 없습니다.");
+                                    }
+                                }, 500);
+                            }
+                            else {
+                                notice.setText("조회 완료");
+                                Handler handler1 = new Handler();
+                                handler1.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        yes_date.setVisibility(View.VISIBLE);
+                                        no_date.setVisibility(View.GONE);
+                                    }
+                                }, 500);
+                            }
+                            arrayList.clear();
+                            //데이터가 있다면 arraylist에 넣어서 리사이클러뷰에 출력
+                            for (int temp = 0; temp < nList.getLength(); temp++) { //api가 작동을 하지않아 item 갯수가 없어서 for문이 작동을 안함
+                                nNode2 = nList.item(temp);
+                                if (nNode2.getNodeType() == Node.ELEMENT_NODE) { //노드 type이 같을 경우에 실행
+                                    //log 확인 작업
+                                    eElement2 = (Element) nNode2;
+                                    Ob_Train_Station_Info_list ob_train_station_info_list = new Ob_Train_Station_Info_list(); //각 항목들 null포인트 대처
+                                    ob_train_station_info_list.setDepplandtime(getTagValue("depplandtime", eElement2)); //출발시간
+                                    ob_train_station_info_list.setArrplandtime(getTagValue("arrplandtime", eElement2)); //도착시간
+                                    ob_train_station_info_list.setAdultcharge(getTagValue("adultcharge", eElement2)); //요금
+                                    ob_train_station_info_list.setTraingradename(getTagValue("traingradename", eElement2)); //기차종류
+                                    ob_train_station_info_list.setDepplacename(getTagValue("depplacename", eElement2));//출발지
+                                    ob_train_station_info_list.setArrplacename(getTagValue("arrplacename", eElement2)); //도착지
+                                    ob_train_station_info_list.setTrainno(getTagValue("trainno", eElement2)); //기차번호
+                                    arrayList.add(ob_train_station_info_list);
+                                }
+                            }
+                            recyclerview.setAdapter(adapter);
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                } catch (ProtocolException e) {
+                    throw new RuntimeException(e);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ParserConfigurationException e) {
+                    throw new RuntimeException(e);
+                } catch (SAXException e) {
+                    throw new RuntimeException(e);
+                }catch (RuntimeException e){
+                }
+
+            }
+        }).start();
+
+    }
+
     public void  setSearch_view(String charText){
-        ArrayList<Ob_Train_Info> myList = new ArrayList<>();
-        for (Ob_Train_Info ob_train_info : arrayList){
-            if (ob_train_info.getAddress().toLowerCase().contains(charText.toLowerCase())||ob_train_info.getNodename().toLowerCase().contains(charText.toLowerCase())){
-                myList.add(ob_train_info);
+        ArrayList<Ob_Train_Station_Info_list> myList = new ArrayList<>();
+        for (Ob_Train_Station_Info_list ob_train_station_info_list : arrayList){
+            if (ob_train_station_info_list.getArrplacename().toLowerCase().contains(charText.toLowerCase())){
+                myList.add(ob_train_station_info_list);
             }
         }
-        adapter = new CusTomAdapter_Train_Station_list(myList,Place_Train_Info.this);
+        adapter = new CusTomAdapter_Train_Info_list(myList,Place_Train_Info.this);
         recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
-
-
-
-
-
-
-    public void set_save_day(){
-        SharedPreferences set_save_day = getSharedPreferences("save_save_day",MODE_PRIVATE);
-        SharedPreferences.Editor set_save_day_editor =set_save_day.edit();
-        set_save_day_editor.putString("save_day_key",day_save);
-        set_save_day_editor.apply();
-    }
-    public void get_save_set_save_day(){
-        SharedPreferences get_save_day = getSharedPreferences("save_save_day",MODE_PRIVATE);
-        day_save = get_save_day.getString("save_day_key","");
+    public  String getTagValue(String tag, Element eElement){ //xml에서 파싱할 데이터 찾기
+        nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
+        nValue = (Node) nlList.item(0);
+        if (nValue == null)
+            return null;
+        return nValue.getNodeValue();
     }
 
 
-    public void get_save_select_address(){
-        SharedPreferences get_save_select_address = getSharedPreferences("save_select_address",MODE_PRIVATE);
-        select_address = get_save_select_address.getString("save_select_address_key","");
-    }
 }

@@ -18,8 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,7 +29,7 @@ public class Place_Train_Choice extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
     RecyclerView.Adapter adapter;
-    ArrayList<Ob_Train_Choice> arrayList;
+    ArrayList<Ob_Station_Choice> arrayList;
     TextView year,month;
     String day_save;
 
@@ -70,7 +68,7 @@ public class Place_Train_Choice extends AppCompatActivity {
                 try {
                     arrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        arrayList.add(dataSnapshot.getValue(Ob_Train_Choice.class));
+                        arrayList.add(dataSnapshot.getValue(Ob_Station_Choice.class));
                     }
 
                     adapter.notifyDataSetChanged();
@@ -84,9 +82,9 @@ public class Place_Train_Choice extends AppCompatActivity {
             }
         });
 
-        Collections.sort(arrayList, new Comparator<Ob_Train_Choice>() {
+        Collections.sort(arrayList, new Comparator<Ob_Station_Choice>() {
             @Override
-            public int compare(Ob_Train_Choice o1, Ob_Train_Choice o2) {
+            public int compare(Ob_Station_Choice o1, Ob_Station_Choice o2) {
                 return o1.getFinal_nodename().compareTo(o2.getFinal_nodename());
             }
         });

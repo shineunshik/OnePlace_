@@ -30,8 +30,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
-            android:name=".Place_Bus_Station_Choice"
+            android:name=".Place_Train_Info"
             android:exported="false" />
+        <activity
+            android:name=".Place_Bus_Station_Choice"
+            android:exported="false"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".Place_Hospital_Info"
             android:exported="false" />
@@ -44,7 +49,7 @@
             android:label=""
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
-            android:name=".Place_Train_Info"
+            android:name=".Place_Train_Intercity"
             android:exported="false" />
         <activity
             android:name=".Place_Bus_Station_Info"

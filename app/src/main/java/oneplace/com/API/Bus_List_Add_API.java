@@ -142,7 +142,7 @@ public class Bus_List_Add_API {
                     }
                     catch (NullPointerException e){ }
                     try {
-                        databaseReference.child(getTagValue("terminalNm", eElement_item)).child("station_use").setValue("");
+                       // databaseReference.child(getTagValue("terminalNm", eElement_item)).child("station_use").setValue("");
                     }
                     catch (NullPointerException e){ }
 

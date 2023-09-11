@@ -71,15 +71,19 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
     Element eElement_body,eElement2;
     TextView terminalNm;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_bus_station_info);
 
+
         day=(TextView)findViewById(R.id.day);
         day.setText(getIntent().getStringExtra("day_save"));
         terminalNm=(TextView)findViewById(R.id.terminalNm);
-        terminalNm.setText(getIntent().getStringExtra("terminalNm")+" 고속버스 터미널");
+        terminalNm.setText(getIntent().getStringExtra("start_nodename")+" 고속버스 터미널");
+
+
 
         notice=(TextView)findViewById(R.id.notice);
         notice.setText("배차 정보 조회 중입니다.\n잠시만 기다려 주세요.");
@@ -95,7 +99,6 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
         recyclerview.setHasFixedSize(true);
         arrayList = new ArrayList<>();
         adapter= new CusTomAdapter_Bus_Station_Info_list(arrayList,Place_Bus_Station_Info.this);
-
 
 
         //오름차순,내림차순
@@ -122,9 +125,8 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
             }
         });
 
-
         try {
-            Bus_Station(getIntent().getStringExtra("day_save"));
+            Bus_Station();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -132,7 +134,7 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
 
     }
 
-    public void Bus_Station(String day_intent)throws IOException{
+    public void Bus_Station()throws IOException{
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -144,9 +146,9 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
                     urlBuilder_total.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                     urlBuilder_total.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
                     urlBuilder_total.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
-                    urlBuilder_total.append("&" + URLEncoder.encode("depTerminalId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("terminalId"), "UTF-8")); /*출발터미널ID*/
-                    urlBuilder_total.append("&" + URLEncoder.encode("arrTerminalId","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*도착터미널ID*/
-                    urlBuilder_total.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode(day_intent, "UTF-8")); /*출발일(YYYYMMDD)*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("depTerminalId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("start_nodeID"), "UTF-8")); /*출발터미널ID*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("arrTerminalId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("final_nodeID"), "UTF-8")); /*도착터미널ID*/
+                    urlBuilder_total.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("day_save"), "UTF-8")); /*출발일(YYYYMMDD)*/
                     urlBuilder_total.append("&" + URLEncoder.encode("busGradeId","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*버스등급*/
 
                     url_total = new URL(urlBuilder_total.toString());
@@ -187,9 +189,9 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
                     urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
                     urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(num, "UTF-8")); /*한 페이지 결과 수*/
                     urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
-                    urlBuilder.append("&" + URLEncoder.encode("depTerminalId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("terminalId"), "UTF-8")); /*출발터미널ID*/
-                    urlBuilder.append("&" + URLEncoder.encode("arrTerminalId","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*도착터미널ID*/
-                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode(day_intent, "UTF-8")); /*출발일(YYYYMMDD)*/
+                    urlBuilder.append("&" + URLEncoder.encode("depTerminalId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("start_nodeID"), "UTF-8")); /*출발터미널ID*/
+                    urlBuilder.append("&" + URLEncoder.encode("arrTerminalId","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("final_nodeID"), "UTF-8")); /*도착터미널ID*/
+                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode(getIntent().getStringExtra("day_save"), "UTF-8")); /*출발일(YYYYMMDD)*/
                     urlBuilder.append("&" + URLEncoder.encode("busGradeId","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*버스등급*/
                     url = new URL(urlBuilder.toString());
                     httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -207,7 +209,7 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
                     }
                     rd.close();
                     httpURLConnection.disconnect();
-                    System.out.println(sb.toString());
+                   // System.out.println(sb.toString());
 
                     //xml 데이터를 파싱하기 위한 코드
                     document = DocumentBuilderFactory
@@ -283,6 +285,7 @@ public class Place_Bus_Station_Info extends AppCompatActivity {
                     throw new RuntimeException(e);
                 } catch (SAXException e) {
                     throw new RuntimeException(e);
+                }catch (RuntimeException e){
                 }
 
             }

@@ -1,6 +1,6 @@
 package oneplace.com;
 
-public class Ob_Train_Choice {
+public class Ob_Station_Choice {
 
     String final_nodeid;
     String final_nodename;
@@ -8,7 +8,7 @@ public class Ob_Train_Choice {
     String start_nodename;
     String check;
 
-    public Ob_Train_Choice(){
+    public Ob_Station_Choice(){
 
     }
 
