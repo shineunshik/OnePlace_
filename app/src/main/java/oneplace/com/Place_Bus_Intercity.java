@@ -52,9 +52,6 @@ import oneplace.com.API.Bus_List_Add_API;
 import oneplace.com.API.Bus_List_Mapping_API;
 
 public class Place_Bus_Intercity extends AppCompatActivity  {
-    NodeList nlList;
-    Node nValue;
-
     Spinner address_choice;
     RecyclerView recyclerview;
     ArrayList<Ob_Bus_Station_list> arrayList;
@@ -72,24 +69,6 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
     CalendarView calendar;
     SearchView search_view;
     String select_address;
-    int start,finall;
-    NodeList nList_item,nList_item2;
-    FirebaseDatabase database2;
-    DatabaseReference databaseReference2;
-    DatabaseReference databaseReference3;
-
-    StringBuilder urlBuilder ;
-    URL url;
-    HttpURLConnection httpURLConnection;
-    BufferedReader rd;
-    String line;
-    StringBuilder sb;
-    Document document;
-    Node nNode_item ;
-    Element eElement_item;
-    Node nNode_item2 ;
-    Element eElement_item2 ;
-    Bus_List_Add_API bus_list_Add_api;
     Bus_List_Mapping_API bus_list_mapping_api;
 
     FirebaseDatabase database_real;
@@ -171,7 +150,7 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
 
         database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
         databaseReference=database.getReference("-고속버스").child("-정류장LIST");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {

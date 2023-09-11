@@ -10,6 +10,19 @@
     android:layout_height="match_parent"
     tools:context=".Place_Bus_Intercity">
     <LinearLayout
+        android:paddingVertical="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="고속버스"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
         android:paddingVertical="20dp"
         android:layout_gravity="center"
         android:gravity="center"

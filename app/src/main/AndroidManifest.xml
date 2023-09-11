@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".Place_Bus_Station_Choice"
+            android:exported="false" />
+        <activity
             android:name=".Place_Hospital_Info"
             android:exported="false" />
         <activity

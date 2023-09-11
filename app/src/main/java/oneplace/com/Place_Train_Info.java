@@ -53,13 +53,8 @@ import oneplace.com.API.Train_List_Mapping_API;
 
 public class Place_Train_Info extends AppCompatActivity {
     FirebaseDatabase database;
-    FirebaseDatabase database2;
     DatabaseReference databaseReference;
-    DatabaseReference databaseReference2;
-    DatabaseReference databaseReference3;
-    NodeList nlList;
-    Node nValue;
-    String num;
+
     String day_save;
     String select_address;
     Dialog Calendar_dialog;
@@ -73,23 +68,6 @@ public class Place_Train_Info extends AppCompatActivity {
     RecyclerView recyclerview;
     String key,select_area_spinner;
     SearchView search_view;
-    int start,finall;
-    NodeList nList_item,nList_item2;
-
-    StringBuilder urlBuilder ;
-    URL url;
-    HttpURLConnection httpURLConnection;
-    BufferedReader rd;
-    String line;
-    StringBuilder sb;
-    Document document;
-    Node nNode_item ;
-    Element eElement_item;
-
-    Node nNode_item2;
-
-    Element eElement_item2 ;
-    Train_List_Add_API train_list_add_api;
     Train_List_Mapping_API train_list_mapping_api;
     FirebaseDatabase database_real;
     DatabaseReference databaseReference_real;
@@ -183,7 +161,7 @@ public class Place_Train_Info extends AppCompatActivity {
 
         database=FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
         databaseReference=database.getReference("-기차역").child("-기차역LIST");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
