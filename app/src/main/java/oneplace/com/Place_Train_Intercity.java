@@ -168,17 +168,20 @@ public class Place_Train_Intercity extends AppCompatActivity {
                                     arrayList_real.add(dataSnapshot.getValue(Ob_Station_Choice.class));
                                 }
 
+                                System.out.println("\n\n\n check 총 어레이"+arrayList_real.size()+"\n\n\n");
+                                System.out.println("\n\n\n list 총 어레이"+arrayList.size()+"\n\n\n");
+
                                 // 각 기차역이 도착하는 기차역 발췌 작업중 트래픽 초과로 중단  (원주부터 진행)
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            train_list_mapping_api.Train_station_Info(arrayList,arrayList_real);
-                                        } catch (IOException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }
-                                }).start();
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        try {
+//                                            train_list_mapping_api.Train_station_Info(arrayList,arrayList_real);
+//                                        } catch (IOException e) {
+//                                            throw new RuntimeException(e);
+//                                        }
+//                                    }
+//                                }).start();
 
 
                             }

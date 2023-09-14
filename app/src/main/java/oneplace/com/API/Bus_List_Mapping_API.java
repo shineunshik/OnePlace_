@@ -62,7 +62,8 @@ public class Bus_List_Mapping_API {
     public void bus_station_Info(ArrayList<Ob_Bus_Station_list> arrayList, ArrayList<Ob_Bus_Station_Info_list> arrayLIST_ADD)throws IOException {
 
 
-        for (start=arrayLIST_ADD.size()-1; start <= arrayList.size(); start++) {
+       // for (start=arrayLIST_ADD.size()-1; start <= arrayList.size(); start++) {
+        for (start=0; start <= arrayList.size(); start++) {
             for (finall = 0; finall < arrayList.size(); finall++) {
                 try {
                     database = FirebaseDatabase.getInstance("https://oneplace-db16a-default-rtdb.firebaseio.com/");
@@ -85,7 +86,7 @@ public class Bus_List_Mapping_API {
                     urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*데이터 타입(xml, json)*/
                     urlBuilder.append("&" + URLEncoder.encode("depTerminalId", "UTF-8") + "=" + URLEncoder.encode(arrayList.get(start).getTerminalId(), "UTF-8")); /*출발터미널ID*/
                     urlBuilder.append("&" + URLEncoder.encode("arrTerminalId", "UTF-8") + "=" + URLEncoder.encode(arrayList.get(finall).getTerminalId(), "UTF-8")); /*도착터미널ID*/
-                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime", "UTF-8") + "=" + URLEncoder.encode("20230909", "UTF-8")); /*출발일(YYYYMMDD)*/
+                    urlBuilder.append("&" + URLEncoder.encode("depPlandTime", "UTF-8") + "=" + URLEncoder.encode("20230910", "UTF-8")); /*출발일(YYYYMMDD)*/
                     urlBuilder.append("&" + URLEncoder.encode("busGradeId", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*버스등급*/
 
 

@@ -176,17 +176,17 @@ public class Place_Bus_Intercity extends AppCompatActivity  {
                                 System.out.println("\n\n\n check 총 어레이"+arrayList_real.size()+"\n\n\n");
                                 System.out.println("\n\n\n list 총 어레이"+arrayList.size()+"\n\n\n");
 
-//
-//                                new Thread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        try {
-//                                            bus_list_mapping_api.bus_station_Info(arrayList,arrayList_real);
-//                                        } catch (IOException e) {
-//                                            throw new RuntimeException(e);
-//                                        }
-//                                    }
-//                                }).start();
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            bus_list_mapping_api.bus_station_Info(arrayList,arrayList_real);
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                }).start();
 
 
                             }
